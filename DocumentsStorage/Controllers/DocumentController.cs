@@ -27,6 +27,17 @@ namespace DocumentsStorage.Controllers
         {
             try
             {
+                if (file == null)
+                {
+                    return BadRequest("Please submit a document");
+                }
+
+                if (string.IsNullOrEmpty(file.Name) || 
+                    string.IsNullOrEmpty(file.Description))
+                {
+                    return BadRequest("Please provide values for both Name and Description");
+                }
+
                 documentService.Create(file);
 
                 return Ok();
@@ -59,6 +70,11 @@ namespace DocumentsStorage.Controllers
         {
             try
             {
+                if (id <= 0)
+                {
+                    return BadRequest("Please provide a valid id value");
+                }
+
                 var document = documentService.Download(id);
 
                 using (var stream = new MemoryStream(document.FileContent))
@@ -90,6 +106,11 @@ namespace DocumentsStorage.Controllers
         {
             try
             {
+                if (id <= 0)
+                {
+                    return BadRequest("Please provide a valid id value");
+                }
+
                 documentService.Delete(id);
 
                 return Ok();
