@@ -1,7 +1,11 @@
+using DinkToPdf.Contracts;
 using DocumentsStorage.Service.Interfaces;
 using DocumentsStorage.Service.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
+using System.Linq;
 
 namespace DocumentsStorage.Controllers
 {
@@ -9,10 +13,10 @@ namespace DocumentsStorage.Controllers
     [Route("[controller]")]
     public class DocumentController : ControllerBase
     {
-        public readonly IDocumentService _documentService;
+        public readonly IDocumentService documentService;
         public DocumentController(IDocumentService documentService)
         {
-            _documentService = documentService;
+            this.documentService = documentService;
         }
 
         [HttpPost]
@@ -20,7 +24,7 @@ namespace DocumentsStorage.Controllers
         {
             try
             {
-                _documentService.Create(file);
+                documentService.Create(file);
 
                 return Ok();
             }
@@ -35,9 +39,39 @@ namespace DocumentsStorage.Controllers
         {
             try
             {
-                var documents = _documentService.GetDocuments();
+                var documents = documentService.GetDocuments();
 
                 return Ok(documents);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.ToString());
+            }
+        }
+        
+        [HttpGet("Download")]
+        public IActionResult Download(long id)
+        {
+            try
+            {
+                var document = documentService.Download(id);
+
+                using (var stream = new MemoryStream(document.FileContent))
+                {
+                    var file = new FormFile(stream, 0, document.FileContent.Length,document.Name, document.Name)
+                    {
+                        Headers = new HeaderDictionary(),
+                        ContentType = document.FileType,
+                    };
+
+                    System.Net.Mime.ContentDisposition cd = new System.Net.Mime.ContentDisposition
+                    {
+                        FileName = file.FileName
+                    };
+                    file.ContentDisposition = cd.ToString();
+
+                    return Ok(file);
+                }
             }
             catch (Exception ex)
             {
@@ -50,7 +84,7 @@ namespace DocumentsStorage.Controllers
         {
             try
             {
-                _documentService.Delete(id);
+                documentService.Delete(id);
 
                 return Ok();
             }

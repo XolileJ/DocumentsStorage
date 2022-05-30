@@ -67,6 +67,13 @@ namespace DocumentsStorage.Service.Services
             }
         }
 
+        public DocumentViewModel Download(long id)
+        {
+            var document = documentRepository.GetById(id);
+
+            return mapper.Map<DocumentViewModel>(document);
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

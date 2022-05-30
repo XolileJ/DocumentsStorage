@@ -10,5 +10,6 @@ namespace DocumentsStorage.Service.Interfaces
         void Create(FileUploadViewModel file);
         void Delete(long id);
         IEnumerable<DocumentViewModel> GetDocuments();
+        DocumentViewModel Download(long id);
     }
 }
