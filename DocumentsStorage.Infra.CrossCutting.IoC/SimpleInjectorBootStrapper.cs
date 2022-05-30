@@ -4,6 +4,7 @@ using DocumentsStorage.Infra.Data.Interfaces;
 using DocumentsStorage.Infra.Data.Repository;
 using DocumentsStorage.Service.Interfaces;
 using DocumentsStorage.Service.Services;
+using DocumentsStorage.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace DocumentsStorage.Infra.CrossCutting.IoC
             services.AddAutoMapper(GetAutoMapperProfilesFromAllAssemblies().ToArray());
 
             services.AddScoped<IDocumentService, DocumentService>();
+            services.AddScoped<IUserService, UserService>();
 
             // Infra - Data
             services.AddScoped<IDocumentRepository, DocumentRepository>();

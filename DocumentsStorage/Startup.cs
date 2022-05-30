@@ -1,18 +1,14 @@
 using DocumentsStorage.Infra.CrossCutting.IoC;
-using DocumentsStorage.Infra.Data.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
 namespace DocumentsStorage
 {
@@ -28,6 +24,39 @@ namespace DocumentsStorage
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:SecurityKey"]));
+
+            // is to be used when validating a user token
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                // The signing key must match!
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+                // Validate the JWT Issuer (iss) claim
+                ValidateIssuer = false,
+                // Validate the JWT Audience (aud) claim
+                ValidateAudience = false,
+                // Validate the token expiry
+                ValidateLifetime = true,
+                // If you want to allow a certain amount of clock drift, set that here:
+                ClockSkew = TimeSpan.Zero
+            };
+
+            // Add Authentication Service
+            // Set JWT Bearer Token to be users as authentication scheme and assign the token validation parameters
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = tokenValidationParameters;
+            });
+
+            // Add Authorization Service
+            services.AddAuthorization(options =>
+            {
+                // Specify that JWT Authentication Scheme will be used for Authorization
+                options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build();
+                options.AddPolicy("AdministratorOnly", policy => policy.RequireClaim("admin").RequireAuthenticatedUser());
+            });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -60,6 +89,8 @@ namespace DocumentsStorage
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
