@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentsStorage", "DocumentsStorage\DocumentsStorage.csproj", "{6AE7E846-F451-47D3-A1D8-15ED5CAEBBEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentsStorage", "DocumentsStorage\DocumentsStorage.csproj", "{6AE7E846-F451-47D3-A1D8-15ED5CAEBBEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentsStorage.Infra.CrossCutting.IoC", "DocumentsStorage.Infra.CrossCutting.IoC\DocumentsStorage.Infra.CrossCutting.IoC.csproj", "{2C1D7048-082A-40F9-86BE-8D1E09FA707D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentsStorage.Infra.CrossCutting.IoC", "DocumentsStorage.Infra.CrossCutting.IoC\DocumentsStorage.Infra.CrossCutting.IoC.csproj", "{2C1D7048-082A-40F9-86BE-8D1E09FA707D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentsStorage.Infra.Data", "DocumentsStorage.Infra.Data\DocumentsStorage.Infra.Data.csproj", "{4A1E14E3-BED8-4E0B-AC5C-C41713A7D633}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentsStorage.Infra.Data", "DocumentsStorage.Infra.Data\DocumentsStorage.Infra.Data.csproj", "{4A1E14E3-BED8-4E0B-AC5C-C41713A7D633}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentsStorage.Service", "DocumentsStorage.Service\DocumentsStorage.Service.csproj", "{857A9E54-69C9-4921-AFD6-3C0C2D0D5EDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentsStorage.Service", "DocumentsStorage.Service\DocumentsStorage.Service.csproj", "{857A9E54-69C9-4921-AFD6-3C0C2D0D5EDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
