@@ -19,6 +19,12 @@ namespace DocumentsStorage.Controllers
         {
             try
             {
+                if (string.IsNullOrEmpty(username) ||
+                    string.IsNullOrEmpty(password))
+                {
+                    return BadRequest("Please provide values for both username and password");
+                }
+
                 return Ok(userService.Authenticate(username, password));
             }
             catch (Exception ex)
