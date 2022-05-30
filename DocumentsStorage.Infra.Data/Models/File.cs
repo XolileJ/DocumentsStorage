@@ -10,8 +10,6 @@ namespace DocumentsStorage.Infra.Data.Models
         public long Id { get; set; }
         public long Size { get; set; }
         public string Name { get; set; }
-
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public byte[] FileContent { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string FileType { get; set; }
