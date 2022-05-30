@@ -1,6 +1,8 @@
 using DinkToPdf.Contracts;
 using DocumentsStorage.Service.Interfaces;
 using DocumentsStorage.Service.ViewModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +13,7 @@ namespace DocumentsStorage.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class DocumentController : ControllerBase
     {
         public readonly IDocumentService documentService;
@@ -34,6 +37,7 @@ namespace DocumentsStorage.Controllers
             }
         }
 
+        [Authorize(Policy = "AdministratorOnly")]
         [HttpGet]
         public IActionResult Get()
         {
@@ -48,7 +52,8 @@ namespace DocumentsStorage.Controllers
                 return StatusCode(500, ex.ToString());
             }
         }
-        
+
+        [Authorize(Policy = "AdministratorOnly")]
         [HttpGet("Download")]
         public IActionResult Download(long id)
         {
@@ -79,6 +84,7 @@ namespace DocumentsStorage.Controllers
             }
         }
 
+        [Authorize(Policy = "AdministratorOnly")]
         [HttpDelete]
         public IActionResult Delete([FromForm] long id)
         {
